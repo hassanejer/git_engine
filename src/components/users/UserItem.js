@@ -2,15 +2,24 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import User from './User';
+import { useParams } from 'react-router-dom';
+
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} />;
+}
 
 class UserItem extends Component {
-    state= {
-      user:{}
-  }
-
+    constructor(props){
+      super(props);
+      this.state= {
+        user:{}
+    }
+    
+    }
 
   componentWillMount(){
-    const login = this.props.match.params.login;
+    const login = this.props.params.login;
+    
 
     axios.get(`https://api.github.com/users/${login}`)
          .then(res =>{
@@ -30,4 +39,4 @@ class UserItem extends Component {
   }
 }
 
-export default UserItem
+export default withParams(UserItem)
